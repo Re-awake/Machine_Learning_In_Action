@@ -1,0 +1,3 @@
+import treePlotter
+
+treePlotter.createPlot()
