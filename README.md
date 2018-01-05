@@ -11,3 +11,8 @@ Versions of software:
 - NumPy: 1.14.0 (64 bit version)
 - SciPy: 1.0.0 (64 bit version)
 - Matplotlib: 2.1.1 (64 bit version)
+
+## Note
+1. All libraries are imported in the beginning/first few lines of scripts. There is no import command in the middle of scripts.
+2. Only needed materials are included in the folder.
+3. The coding style is slightly different from the book.
