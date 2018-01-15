@@ -2,6 +2,7 @@ from numpy import *
 from os import listdir
 import operator
 
+# Create data for later usage, chapter 2_1_1
 def createDataSet():
     group = array([[1.0, 1.1], [1.0, 1.0], [0, 0], [0, 0.1]])
     labels = ['A', 'A', 'B', 'B']
@@ -52,8 +53,11 @@ def autoNorm(dataSet):
     ranges = maxVals - minVals
     normDataSet = zeros(shape(dataSet))
     m = dataSet.shape[0]
-    # Normalization Step
+    # Normalization Step, dataset minus minimum value
+    # tile function means create a matrix with m row, repeating minVals for
+    # column once.
     normDataSet = dataSet - tile(minVals, (m, 1))
+    # Normalization Step, divide the range of value
     normDataSet = normDataSet / tile(ranges, (m, 1))
     return normDataSet, ranges, minVals
 
@@ -66,6 +70,7 @@ def datingClassTest():
     m = normMat.shape[0]
     numTestVecs = int(m * hoRatio)
     errorCount = 0.0
+    # Testing classifier
     for i in range(numTestVecs):
         classifierResult = classify0(normMat[i, :], normMat[numTestVecs:m, :],
                             datingLabels[numTestVecs:m], 3)
@@ -107,7 +112,7 @@ def handwritingClassTest():
     trainingFileList = listdir('trainingDigits')
     m = len(trainingFileList)
     trainingMat = zeros((m, 1024))
-    # Analysis the number from the file name
+    # Analysis the number from the file name, training the data
     for i in range(m):
         fileNameStr = trainingFileList[i]
         fileStr = fileNameStr.split('.')[0]
@@ -117,6 +122,7 @@ def handwritingClassTest():
     testFileList = listdir('testDigits')
     errorCount = 0.0
     mTest = len(testFileList)
+    # Testing the algorithm
     for i in range(mTest):
         fileNameStr = testFileList[i]
         fileStr = fileNameStr.split('_')[0]

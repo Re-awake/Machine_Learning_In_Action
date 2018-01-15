@@ -1,3 +1,4 @@
+# Ploting data using matplotlib, chapter 2_2_2
 import matplotlib, kNN
 import matplotlib.pyplot as plt
 from numpy import *

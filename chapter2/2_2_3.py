@@ -1,3 +1,4 @@
+# Port the graph using normalized data, chapter 2_2_3
 import kNN
 
 datingDataMat, datingLabels = kNN.file2matrix('datingTestSet2.txt')
