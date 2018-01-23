@@ -27,7 +27,7 @@ def createDataSet():
     labels = ['no surfacing', 'flippers']
     return dataSet, labels
 
-# Spliting classes for particular feature
+# Spliting classes for particular feature, program 3_2
 def splitDataSet(dataSet, axis, value):
     # Create a new list object
     retDataSet = []

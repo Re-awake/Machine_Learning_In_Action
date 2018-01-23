@@ -1,11 +1,12 @@
 import matplotlib.pyplot as plt
 import pickle
 
+# Define the figure size and arrow format, program 3_5
 decisionNode = dict(boxstyle="sawtooth", fc = "0.8")
 leafNode = dict(boxstyle="round4", fc = "0.8")
 arrow_args = dict(arrowstyle = "<-")
 
-# Use comment to plot the tree
+# Draw comment with arrows
 def plotNode(nodeTxt, centerPt, parentPt, nodeType):
     createPlot.ax1.annotate(nodeTxt, xy = parentPt, \
     xycoords = 'axes fraction', xytext = centerPt, \
@@ -55,7 +56,7 @@ def retrieveTree(i):
                    ]
     return listOfTrees[i]
 
-# Fill text message in father nodes
+# Fill text message in father nodes, program 3_7
 def plotMidText(cntrPt, parentPt, txtString):
     xMid = (parentPt[0] - cntrPt[0]) / 2.0 + cntrPt[0]
     yMid = (parentPt[1] - cntrPt[1]) / 2.0 + cntrPt[1]
