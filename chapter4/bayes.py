@@ -1,7 +1,7 @@
 from numpy import *
 import re, operator
 
-# From wordlist change to vector, program 4_1
+# Convert wordlist to vector, program 4_1
 def loadDataSet():
     postingList=[['my', 'dog', 'has', 'flea', 'problems', 'help', 'please'],
                  ['maybe', 'not', 'take', 'him', 'to', 'dog', 'park', 'stupid'],
@@ -98,7 +98,7 @@ def spamTest():
     classList = [];
     fullText = [];
     for i in range(1, 26):
-        print(i)
+        # Load and parse the email
         wordList = textParse(open('email/spam/%d.txt' %i).read())
         docList.append(wordList)
         fullText.extend(wordList)
@@ -111,6 +111,7 @@ def spamTest():
     trainingSet = list(range(50))
     testSet = []
     for i in range(10):
+        # Construct training dataset using random number
         randIndex = int(random.uniform(0, len(trainingSet)))
         testSet.append(trainingSet[randIndex])
         del(trainingSet[randIndex])
@@ -122,6 +123,7 @@ def spamTest():
     p0V, p1V, pSpam = trainNB0(array(trainMat), array(trainClasses))
     errorCount = 0
     for docIndex in testSet:
+        # Classify the training dataset
         wordVector = setOfWords2Vec(vocabList, docList[docIndex])
         if classifyNB(array(wordVector), p0V, p1V, pSpam) != classList[docIndex]:
             errorCount += 1
@@ -193,4 +195,3 @@ def getTopWords(ny, sf):
     print("NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**NY**")
     for item in sortedNY:
         print(item[0])
-    
