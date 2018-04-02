@@ -8,3 +8,5 @@ print(max(datMat[:, 1]))
 print(max(datMat[:, 0]))
 
 print(kMeans.randCent(datMat, 2))
+
+print(kMeans.distEclud(datMat[0], datMat[1]))
