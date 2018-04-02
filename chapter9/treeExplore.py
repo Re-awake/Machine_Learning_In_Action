@@ -10,6 +10,7 @@ from matplotlib.figure import Figure
 def reDraw(tolS, tolN):
     reDraw.f.clf()
     reDraw.a = reDraw.f.add_subplot(111)
+    # Check which is selected
     if chkBtnVar.get():
         if tolN < 2:
             tolN = 2
@@ -30,6 +31,7 @@ def getInputs():
     except:
         tolN = 10
         print("enter Integer for tolN")
+        # Clear wrong input and replace with default value
         tolNentry.delete(0, END)
         tolNentry.insert(0, '10')
     try:

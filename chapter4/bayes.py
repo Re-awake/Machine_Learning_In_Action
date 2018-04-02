@@ -131,6 +131,7 @@ def spamTest():
 
 # RSS classifier and high drequency word deletion, program 4_6
 def calcMostFreq(vocabList, fullText):
+    # Calculate the frequency of word
     freqDict = {}
     for token in vocabList:
         freqDict[token] = fullText.count(token)
@@ -144,6 +145,7 @@ def localWords(feed1, feed0):
     fullText = []
     minLen = min(len(feed1['entries']), len(feed0['entries']))
     for i in range(minLen):
+        # Visit one RSS source each time
         wordList = textParse(feed1['entries'][i]['summary'])
         docList.append(wordList)
         fullText.extend(wordList)
@@ -153,6 +155,7 @@ def localWords(feed1, feed0):
         fullText.extend(wordList)
         classList.append(0)
     vocabList = createVocabList(docList)
+    # Remove the top 30 words from vocabList
     top30Words = calcMostFreq(vocabList, fullText)
     for pairW in top30Words:
         if pairW[0] in vocabList:

@@ -13,6 +13,7 @@ def loadDataSet(fileName):
     fr = open(fileName)
     for line in fr.readlines():
         curLine = line.strip().split('\t')
+        # Change every line into float number
         fltLine = list(map(float, curLine))
         dataMat.append(fltLine)
     return dataMat
@@ -31,6 +32,7 @@ def regErr(dataSet):
 
 def createTree(dataSet, leafType = regLeaf, errType = regErr, ops = (1, 4)):
     feat, val = chooseBestSplit(dataSet, leafType, errType, ops)
+    # Return node value if requirements are satisfied
     if feat == None:
         return val
     retTree = {}
@@ -44,6 +46,7 @@ def createTree(dataSet, leafType = regLeaf, errType = regErr, ops = (1, 4)):
 def chooseBestSplit(dataSet, leafType = regLeaf, errType = regErr, ops= (1, 4)):
     tolS = ops[0]
     tolN = ops[1]
+    # If all values are equal, return
     if len(set(dataSet[:, -1].T.tolist()[0])) == 1:
         return None, leafType(dataSet)
     m, n = shape(dataSet)
@@ -61,9 +64,11 @@ def chooseBestSplit(dataSet, leafType = regLeaf, errType = regErr, ops= (1, 4)):
                 bestIndex = featIndex
                 bestValue = splitVal
                 bestS = newS
+    # If error does not reduce, return
     if (S - bestS) < tolS:
         return None, leafType(dataSet)
     mat0, mat1 = binSplitDataSet(dataSet, bestIndex, bestValue)
+    # If new data set is small, return
     if (shape(mat0)[0] < tolN) or (shape(mat1)[0] < tolN):
         return None, leafType(dataSet)
     return bestIndex, bestValue
@@ -79,6 +84,7 @@ def getMean(tree):
     return (tree['left'] + tree['right']) / 2.0
 
 def prune(tree, testData):
+    # If no testing data, delete tree
     if shape(testData)[0] == 0:
         return getMean(tree)
     if (isTree(tree['right']) or isTree(tree['left'])):
@@ -104,6 +110,7 @@ def prune(tree, testData):
 # Model Tree's leaf node generation, program 9_4
 def linearSolve(dataSet):
     m, n = shape(dataSet)
+    # Set the data of X and Y
     X = mat(ones((m, n)))
     Y = mat(ones((m, 1)))
     X[:, 1:n] = dataSet[:, 0: n-1]

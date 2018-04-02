@@ -39,15 +39,18 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
             fXi = float(multiply(alphas, labelMat).T*\
                         (dataMatrix*dataMatrix[i, :].T)) + b
             Ei = fXi - float(labelMat[i])
+            # Test the value of alpha whether it needs optimization.
             if ((labelMat[i] * Ei < -toler) and (alphas[i] < C)) or \
                 ((labelMat[i] * Ei > toler) and \
                 (alphas[i] > 0)):
+                # Randomly pick the second alpha
                 j = selectJrand(i, m)
                 fXj = float(multiply(alphas, labelMat).T*\
                             (dataMatrix*dataMatrix[j, :].T)) + b
                 Ej = fXj - float(labelMat[j])
                 alphaIold = alphas[i].copy()
                 alphaJold = alphas[j].copy()
+                # Ensure the range of alpha is between 0 to C
                 if (labelMat[i] != labelMat[j]):
                     L = max(0, alphas[j] - alphas[i])
                     H = min(C, C + alphas[j] - alphas[i])
@@ -68,12 +71,14 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
                 if (abs(alphas[j] - alphaJold) < 0.0001):
                     print("j not moving enough")
                     continue
+                # Modify i with value equals to j, but in opposite direction
                 alphas[i] += labelMat[j] * labelMat[i] * \
                             (alphaJold - alphas[j])
                 b1 = b - Ei - labelMat[i] * (alphas[i] - alphaIold) * \
                     dataMatrix[i, :] * dataMatrix[i, :].T - \
                     labelMat[j] * (alphas[j] - alphaJold) * \
                     dataMatrix[i, :] * dataMatrix[j, :].T
+                # Set constant term
                 b2 = b - Ej - labelMat[i] * (alphas[i] - alphaIold) * \
                      dataMatrix[i, :] * dataMatrix[j, :].T - \
                      labelMat[j] * (alphas[j] - alphaJold) * \
@@ -274,6 +279,7 @@ def smoP(dataMatIn, classLabels, C, toler, maxIter, kTup=('lin', 0)):
     iter = 0
     entireSet = True
     alphaPairsChanged = 0
+    # Iterate all value
     while (iter < maxIter) and ((alphaPairsChanged > 0) or (entireSet)):
         alphaPairsChanged = 0
         if entireSet:
@@ -283,6 +289,7 @@ def smoP(dataMatIn, classLabels, C, toler, maxIter, kTup=('lin', 0)):
                         (iter, i, alphaPairsChanged))
             iter += 1
         else:
+            # Iterate all non-boundaries value
             nonBoundIs = nonzero((oS.alphas.A > 0) * (oS.alphas.A < C))[0]
             for i in nonBoundIs:
                 alphaPairsChanged += innerL(i, oS)
@@ -316,6 +323,7 @@ def kernelTrans(X, A, kTup):
         for j in range(m):
             deltaRow = X[j, :] - A
             K[j] = deltaRow * deltaRow.T
+        # Division betwen elements
         K = exp(K /(-1*kTup[1]**2))
     else:
         raise NameError('Houston We Have a Problem -- \
@@ -328,6 +336,7 @@ def testRbf(k1 = 1.3):
     datMat = mat(dataArr)
     labelMat = mat(labelArr).transpose()
     svInd = nonzero(alphas.A > 0)[0]
+    # Construct SVM matrix
     sVs = datMat[svInd]
     labelSV = labelMat[svInd]
     print("there are %d Support Vectors" % shape(sVs)[0])

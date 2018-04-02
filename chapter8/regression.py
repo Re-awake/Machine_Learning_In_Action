@@ -32,8 +32,10 @@ def lwlr(testPoint, xArr, yArr, k = 1.0):
     xMat = mat(xArr)
     yMat = mat(yArr).T
     m = shape(xMat)[0]
+    # Create diagonal matrix
     weights = mat(eye((m)))
     for j in range(m):
+        # Decrease the weighting value in expotential
         diffMat = testPoint - xMat[j, :]
         weights[j, j] = exp(diffMat * diffMat.T / (-2.0 * k ** 2))
     xTx = xMat.T * (weights * xMat)
@@ -138,6 +140,7 @@ def searchForSet(retX, retY, setNum, yr, numPce, origPrc):
             listOfInv = currItem['product']['inventories']
             for item in listOfInv:
                 sellingPrice = item['price']
+                # Filter imcomplete set
                 if sellingPrice > origPrc * 0.5:
                     print("%d\t%d\t%d\t%f\t%f" %\
                         (yr, numPce, newFlag, origPrc, sellingPrice))
@@ -160,12 +163,14 @@ def crossValidation(xArr, yArr, numVal = 10):
     indexList = range(m)
     errorMat = zeros((numVal, 30))
     for i in range(numVal):
+        # Create training set and testing set
         trainX = []
         trainY = []
         testX = []
         testY = []
         random.shuffle(indexList)
         for j in range(m):
+            # Append data into training set and testing set
             if j < m * 0.9:
                 trainX.append(xArr[indexList[j]])
                 trainY.append(yArr[indexList[j]])
@@ -174,6 +179,7 @@ def crossValidation(xArr, yArr, numVal = 10):
                 testY.append(yArr[indexList[j]])
     wMat = ridgeTest(trainX, trainY)
         for k in range(30):
+            # Standardize all testing data using training data
             matTestX = mat(testX)
             matTrainX = mat(trainX)
             meanTrain = mean(matTrainX, 0)

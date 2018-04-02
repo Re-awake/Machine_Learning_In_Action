@@ -39,6 +39,7 @@ def buildStump(dataArr, classLabels, D):
                 errArr = mat(ones((m, 1)))
                 errArr[predictedVals == labelMat] = 0
                 weightedError = D.T*errArr
+                # calculate the weighted error rate
                 # print("split: dim %d, thresh %.2f, thresh inequal: \
                 #       %s, the weighted error is %.3f" %\
                 #       (i, threshVal, inequal, weightedError))
@@ -63,9 +64,11 @@ def adaBoostTrainDS(dataArr, classLabels, numIt = 40):
         bestStump['alpha'] = alpha
         weakClassArr.append(bestStump)
         print("classEst: ", classEst.T)
+        # Calculate D value for the next iteration
         expon = multiply(-1 * alpha * mat(classLabels).T, classEst)
         D = multiply(D, exp(expon))
         D = D / D.sum()
+        # Accumulate the error rate
         aggClassEst += alpha * classEst
         print("aggClassEst: ", aggClassEst.T)
         aggErrors = multiply(sign(aggClassEst) != mat(classLabels).T, \
@@ -113,6 +116,7 @@ def plotROC(preStrengths, classLabels):
     numPosClas = sum(array(classLabels) == 1.0)
     yStep = 1 / float(numPosClas)
     xStep = 1 / float(len(classLabels) - numPosClas)
+    # Get a sorted list of index
     sortedIndicies = preStrengths.argsort()
     fig = plt.figure()
     fig.clf()
